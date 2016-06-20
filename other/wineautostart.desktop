@@ -1,0 +1,17 @@
+[Desktop Entry]
+Type=Application
+Exec=sh -c "sleep 5; /usr/share/wineautostart/WineAutostart.py"
+Hidden=false
+X-MATE-Autostart-enabled=true
+Name[en_GB]=Wine Autostart
+Name=Wine Autostart
+Comment[en_GB]=Start Wine Autostart On Boot
+Comment=Start Wine Autostart On Boot
+GenericName=Wine Autostart
+Comment[en_GB]=Easily autorun Windows(R) software disks with Wine Autostart
+Comment=Easily autorun Windows(R) software disks with Wine Autostart
+Icon=wineautostart
+Terminal=false
+NoDisplay=true
+Categories=Game;
+StartupNotify=true

@@ -1,0 +1,18 @@
+I respect your privacy.
+Hence, Wine Autostart collects only information it requires to run, and it won't report any information it collects at all, to anybody.
+
+It has never done, and it never will.
+
+In order to run, Wine Autostart needs to gain basic information about devices to run (Device names, Vendor names, Product names, Capacity and Description, if available), and for debugging reasons this information is temporarily saved in a log file (/tmp/wineautostart/wineautostart.log). It does NOT include any personal, or personally identifiable information such as serial numbers or IP addresses.
+
+When Wine Autostart is closed, this information is completely deleted, unless you decide to save it somewhere else when prompted.
+
+To provide the update feature, Wine Autostart uses bzr (Bazaar) to download a text file (LatestVersion.txt) from https://code.launchpad.net/~wineautostart-development-team/wineautostart/latestversion, and Wine Autostart saves the information in a temporary folder (/tmp/wineautostart/bzrrepo).
+
+After processing the information, Wine Autostart deletes the temporary folder, and shows a dialog with the results of the update check.
+
+When connecting to code.launchpad.net to download the update information, bzr may attempt to use your SSH (Secure SHell) key (if you have one) to authenticate with launchpad.net, prompting you for the password. This is normal, and should not concern you. If you don't have an SSH key, don't be concerned, because the update check will still work.
+
+If you wish to see launchpad.net's privacy policy, see https://help.launchpad.net/PrivacyPolicy
+
+All in all, Wine Autostart should be completely safe and anonymous.
