@@ -627,7 +627,7 @@ class PrivPolWindow(wx.Frame):
     def __init__(self,ParentWindow):
         """Initialize PrivPolWindow"""
         wx.Frame.__init__(self, parent=wx.GetApp().TopWindow, title="Wine Autostart - Privacy Policy", size=(400,310), style=wx.DEFAULT_FRAME_STYLE)
-        self.PrivPolPanel = wx.Panel(self)
+        self.Panel = wx.Panel(self)
         self.SetClientSize(wx.Size(400,310))
         self.ParentWindow = ParentWindow
         wx.Frame.SetIcon(self, AppIcon)
@@ -641,15 +641,15 @@ class PrivPolWindow(wx.Frame):
         logger.debug("PrivPolWindow().__init__(): Binding Events...")
         self.BindEvents()
 
-        #Call Layout() on self.PrivPolPanel() to ensure it displays properly.
-        self.PrivPolPanel.Layout()
+        #Call Layout() on self.Panel() to ensure it displays properly.
+        self.Panel.Layout()
 
         logger.debug("PrivPolWindow().__init__(): Ready. Waiting for events...")
 
     def CreateWidgets(self):
         """Create all widgets for PrivPolWindow"""
         #Make a text box to contain the policy's text.
-        self.TextBox = wx.TextCtrl(self.PrivPolPanel, -1, "", style=wx.TE_MULTILINE|wx.TE_READONLY|wx.TE_WORDWRAP)
+        self.TextBox = wx.TextCtrl(self.Panel, -1, "", style=wx.TE_MULTILINE|wx.TE_READONLY|wx.TE_WORDWRAP)
 
         #Populate the text box.
         self.TextBox.LoadFile("/usr/share/wineautostart/other/privacypolicy.txt")
@@ -658,7 +658,7 @@ class PrivPolWindow(wx.Frame):
         self.TextBox.SetInsertionPoint(0)
 
         #Make a button to close the dialog.
-        self.CloseButton = wx.Button(self.PrivPolPanel, -1, "Okay")
+        self.CloseButton = wx.Button(self.Panel, -1, "Okay")
 
     def SetupSizers(self):
         """Set up sizers for PrivPolWindow"""
@@ -670,7 +670,7 @@ class PrivPolWindow(wx.Frame):
         MainSizer.Add(self.CloseButton, 0, wx.BOTTOM|wx.CENTER, 10)
 
         #Get the sizer set up for the frame.
-        self.PrivPolPanel.SetSizer(MainSizer)
+        self.Panel.SetSizer(MainSizer)
         MainSizer.SetMinSize(wx.Size(400,310))
         MainSizer.SetSizeHints(self)
 
@@ -689,7 +689,7 @@ class SettingsWindow(wx.Frame):
     def __init__(self,ParentWindow):
         """Initialize SettingsWindow"""
         wx.Frame.__init__(self, parent=ParentWindow, title="Wine Autostart - Settings", size=(510,380), style=wx.DEFAULT_FRAME_STYLE)
-        self.SettingsPanel = wx.Panel(self)
+        self.Panel = wx.Panel(self)
         self.SetClientSize(wx.Size(510,380))
         self.ParentWindow = ParentWindow
         self.CurrentDeviceSelections = DevicesToMonitor[:]
@@ -723,8 +723,8 @@ class SettingsWindow(wx.Frame):
         logger.debug("SettingsWindow().__init__(): Binding events...")
         self.BindEvents()
 
-        #Call Layout() on self.SettingsPanel() to ensure it displays properly.
-        self.SettingsPanel.Layout()
+        #Call Layout() on self.Panel() to ensure it displays properly.
+        self.Panel.Layout()
 
         #Stop the backend thread, if it's running.
         logger.info("SettingsWindow().SaveConfig(): Stopping backend thread...")
@@ -734,30 +734,30 @@ class SettingsWindow(wx.Frame):
 
     def CreateText(self):
         """Create all text for SettingsWindow"""
-        self.TitleText = wx.StaticText(self.SettingsPanel, -1, "Welcome to settings. Here you can set everything as you prefer.")
-        self.ConfigText = wx.StaticText(self.SettingsPanel, -1, "Configuration settings:")
-        self.DevicesToMonitorText = wx.StaticText(self.SettingsPanel, -1, "Which devices do you want Wine Autostart to monitor?")
+        self.TitleText = wx.StaticText(self.Panel, -1, "Welcome to settings. Here you can set everything as you prefer.")
+        self.ConfigText = wx.StaticText(self.Panel, -1, "Configuration settings:")
+        self.DevicesToMonitorText = wx.StaticText(self.Panel, -1, "Which devices do you want Wine Autostart to monitor?")
 
     def CreateCheckBoxes(self):
         """Create all CheckBoxes for SettingsWindow"""
-        self.StartOnBootCB = wx.CheckBox(self.SettingsPanel, -1, "Start Wine Autostart on boot")
-        self.StartupUpdateCheckCB = wx.CheckBox(self.SettingsPanel, -1, "Check for updates on startup.")
-        self.UseWineAutoscanCB = wx.CheckBox(self.SettingsPanel, -1, "Use Wine Autoscan\nif no autorun info is found")
-        self.PromptBeforeScanningCB = wx.CheckBox(self.SettingsPanel, -1, "Ask before looking\nfor software on a disk")
+        self.StartOnBootCB = wx.CheckBox(self.Panel, -1, "Start Wine Autostart on boot")
+        self.StartupUpdateCheckCB = wx.CheckBox(self.Panel, -1, "Check for updates on startup.")
+        self.UseWineAutoscanCB = wx.CheckBox(self.Panel, -1, "Use Wine Autoscan\nif no autorun info is found")
+        self.PromptBeforeScanningCB = wx.CheckBox(self.Panel, -1, "Ask before looking\nfor software on a disk")
  
     def CreateButtons(self):
         """Create all Buttons for SettingsWindow"""
-        self.RevertButton = wx.Button(self.SettingsPanel, -1, "Revert Changes")
-        self.RefreshButton = wx.Button(self.SettingsPanel, -1, "Update Drive List")
-        self.ImportButton = wx.Button(self.SettingsPanel, -1, "Import Config")
-        self.ExportButton = wx.Button(self.SettingsPanel, -1, "Export Config")
-        self.CloseButton = wx.Button(self.SettingsPanel, -1, "Save Config and Close")
+        self.RevertButton = wx.Button(self.Panel, -1, "Revert Changes")
+        self.RefreshButton = wx.Button(self.Panel, -1, "Update Drive List")
+        self.ImportButton = wx.Button(self.Panel, -1, "Import Config")
+        self.ExportButton = wx.Button(self.Panel, -1, "Export Config")
+        self.CloseButton = wx.Button(self.Panel, -1, "Save Config and Close")
 
     def CreateOtherWidgets(self):
         """Create all the remaining widgets for SettingsWindow"""
         #Create the animation for the throbber here too.
         throb = wx.animate.Animation("/usr/share/wineautostart/images/ThrobberDesign.gif")
-        self.Throbber = wx.animate.AnimationCtrl(self.SettingsPanel, -1, throb)
+        self.Throbber = wx.animate.AnimationCtrl(self.Panel, -1, throb)
         self.Throbber.SetUseWindowBackgroundColour(True)
         self.Throbber.SetInactiveBitmap(wx.Bitmap("/usr/share/wineautostart/images/ThrobberRest.png", wx.BITMAP_TYPE_PNG))
         self.Throbber.SetClientSize(wx.Size(30,30))
@@ -790,11 +790,11 @@ class SettingsWindow(wx.Frame):
 
         #Add objects to the main config sizer.
         MainConfigSizer.Add(CheckBoxSizer, 1, wx.CENTER)
-        MainConfigSizer.Add(wx.StaticLine(self.SettingsPanel), 0, wx.TOP|wx.BOTTOM|wx.EXPAND, 5)
+        MainConfigSizer.Add(wx.StaticLine(self.Panel), 0, wx.TOP|wx.BOTTOM|wx.EXPAND, 5)
         MainConfigSizer.Add(RightHandSizer, 1, wx.CENTER)
 
         #Make the device selection sizer.
-        box = wx.StaticBox(self.SettingsPanel, -1, "Optical Devices")
+        box = wx.StaticBox(self.Panel, -1, "Optical Devices")
         self.DeviceSizer = wx.StaticBoxSizer(box, wx.VERTICAL)
 
         #Make the button sizer.
@@ -806,16 +806,16 @@ class SettingsWindow(wx.Frame):
 
         #Add objects to the main sizer.
         self.MainSizer.Add(self.TitleText, 0, wx.TOP|wx.CENTER, 10)
-        self.MainSizer.Add(wx.StaticLine(self.SettingsPanel), 0, wx.TOP|wx.BOTTOM|wx.EXPAND, 5)
+        self.MainSizer.Add(wx.StaticLine(self.Panel), 0, wx.TOP|wx.BOTTOM|wx.EXPAND, 5)
         self.MainSizer.Add(MainConfigSizer, 0, wx.ALL|wx.CENTER|wx.EXPAND, 10)
-        self.MainSizer.Add(wx.StaticLine(self.SettingsPanel), 0, wx.TOP|wx.BOTTOM|wx.EXPAND, 5)
+        self.MainSizer.Add(wx.StaticLine(self.Panel), 0, wx.TOP|wx.BOTTOM|wx.EXPAND, 5)
         self.MainSizer.Add(self.DevicesToMonitorText, 0, wx.TOP|wx.CENTER, 10)
         self.MainSizer.Add(self.Throbber, 0, wx.TOP|wx.CENTER|wx.FIXED_MINSIZE, 10)
         self.MainSizer.Add(self.DeviceSizer, 1, wx.ALL|wx.CENTER|wx.EXPAND, 10)
         self.MainSizer.Add(ButtonSizer, 0, wx.ALL ^ wx.TOP|wx.CENTER|wx.EXPAND, 10)
 
         #Get the sizer set up for the frame.
-        self.SettingsPanel.SetSizer(self.MainSizer)
+        self.Panel.SetSizer(self.MainSizer)
         self.MainSizer.SetMinSize(wx.Size(510,380))
         self.MainSizer.SetSizeHints(self)
 
@@ -869,7 +869,7 @@ class SettingsWindow(wx.Frame):
     def OnCheckBox(self, Event=None):
         """Save selection information about the checkbox that triggered this function, so we can keepthe user's selection even when refreshing the device list"""
         ID = Event.GetId()
-        CheckBox = self.SettingsPanel.FindWindowById(ID)
+        CheckBox = self.Panel.FindWindowById(ID)
         Device = CheckBox.GetLabel().split()[0].replace(",", "")
 
         if CheckBox.IsChecked() and Device not in self.CurrentDeviceSelections:
@@ -923,7 +923,7 @@ class SettingsWindow(wx.Frame):
             Description = DeviceInfo[5][DeviceNumber]
 
             #Create a checkbox object, and add it to the sizer, save its ID, and bind an event for it.
-            CheckBox = wx.CheckBox(self.SettingsPanel, -1, Device+", "+Vendor+" "+Product+", "+Description)
+            CheckBox = wx.CheckBox(self.Panel, -1, Device+", "+Vendor+" "+Product+", "+Description)
             self.DeviceSizer.Add(CheckBox, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_TOP)
             self.CheckBoxIDList.append(CheckBox.GetId())
             self.Bind(wx.EVT_CHECKBOX, self.OnCheckBox, CheckBox)
@@ -936,13 +936,13 @@ class SettingsWindow(wx.Frame):
 
         #Make sure the window displays properly.
         self.MainSizer.Fit(self)
-        self.SettingsPanel.Layout()
+        self.Panel.Layout()
 
     def ImportConfig(self, Event=None):
         """Import config from a different file. Don't save it or permanently set it."""
         logger.debug("SettingsWindow().ImportConfig(): Getting user selection...")
 
-        Dlg = wx.FileDialog(self.SettingsPanel, "Import From...", defaultDir=os.environ["HOME"], wildcard="Configuration Files (*.cfg)|*.cfg|All Files/Devices (*)|*" , style=wx.OPEN)
+        Dlg = wx.FileDialog(self.Panel, "Import From...", defaultDir=os.environ["HOME"], wildcard="Configuration Files (*.cfg)|*.cfg|All Files/Devices (*)|*" , style=wx.OPEN)
 
         if Dlg.ShowModal() == wx.ID_OK:
             #Get the path.
@@ -958,11 +958,11 @@ class SettingsWindow(wx.Frame):
 
                 if "Permission denied" in unicode(Error):
                     logger.error("SettingsWindow().ImportConfig(): Error importing config from: "+File+"! Insufficient permissions. Warning user and giving up...")
-                    wx.MessageDialog(self.SettingsPanel, "Couldn't import config from "+File+"! Wine Autostart doesn't have permission to read that file. Please try importing from a different file.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR, pos=wx.DefaultPosition).ShowModal()
+                    wx.MessageDialog(self.Panel, "Couldn't import config from "+File+"! Wine Autostart doesn't have permission to read that file. Please try importing from a different file.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR, pos=wx.DefaultPosition).ShowModal()
 
                 else:
                     logger.error("SettingsWindow().ImportConfig(): Error importing config from: "+File+"! Warning user and giving up...")
-                    wx.MessageDialog(self.SettingsPanel, "Couldn't import config from "+File+"! Please try importing from a different file.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR, pos=wx.DefaultPosition).ShowModal()
+                    wx.MessageDialog(self.Panel, "Couldn't import config from "+File+"! Please try importing from a different file.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR, pos=wx.DefaultPosition).ShowModal()
 
             else:
 
@@ -1004,7 +1004,7 @@ class SettingsWindow(wx.Frame):
                         #Set the checkboxes.
                         for ID in self.CheckBoxIDList:
                             #Get the device associated wth each checkbox.
-                            CheckBox = self.SettingsPanel.FindWindowById(ID)
+                            CheckBox = self.Panel.FindWindowById(ID)
                             Device = CheckBox.GetLabel().split()[0].replace(",", "")
 
                             if Device in self.ImportedDevicesToMonitor:
@@ -1024,7 +1024,7 @@ class SettingsWindow(wx.Frame):
         """Export Wine Autostart's settings to a file specified by the user"""
         logger.debug("SettingsWindow().ExportConfig(): Getting user selection...")
 
-        Dlg = wx.FileDialog(self.SettingsPanel, "Export As...", defaultDir=os.environ["HOME"], wildcard="Configuration Files (*.cfg)|*.cfg|All Files/Devices (*)|*" , style=wx.SAVE)
+        Dlg = wx.FileDialog(self.Panel, "Export As...", defaultDir=os.environ["HOME"], wildcard="Configuration Files (*.cfg)|*.cfg|All Files/Devices (*)|*" , style=wx.SAVE)
 
         if Dlg.ShowModal() == wx.ID_OK:
             #Get the path.
@@ -1039,15 +1039,15 @@ class SettingsWindow(wx.Frame):
 
                 if "Permission denied" in unicode(Error.output, errors='ignore'):
                     logger.error("SettingsWindow().ExportConfig(): Error exporting config to: "+File+"! Insufficient permissions. Warning user and giving up...")
-                    wx.MessageDialog(self.SettingsPanel, "Couldn't export config to "+File+"! Wine Autostart doesn't have permission to write to that folder. Please try exporting to a different folder.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR, pos=wx.DefaultPosition).ShowModal()
+                    wx.MessageDialog(self.Panel, "Couldn't export config to "+File+"! Wine Autostart doesn't have permission to write to that folder. Please try exporting to a different folder.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR, pos=wx.DefaultPosition).ShowModal()
 
                 else:
                     logger.error("SettingsWindow().ExportConfig(): Error exporting config to: "+File+"! Warning user and giving up...")
-                    wx.MessageDialog(self.SettingsPanel, "Couldn't export config to "+File+"! Please try exporting to a different folder.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR, pos=wx.DefaultPosition).ShowModal()
+                    wx.MessageDialog(self.Panel, "Couldn't export config to "+File+"! Please try exporting to a different folder.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR, pos=wx.DefaultPosition).ShowModal()
 
             else:
                 logger.info("SettingsWindow().ExportConfig(): Finished exporting config to: "+File+"...")
-                wx.MessageDialog(self.SettingsPanel, "Your config has been successfully exported to "+File+".", "Wine Autostart - Information", style=wx.OK | wx.ICON_INFORMATION, pos=wx.DefaultPosition).ShowModal()
+                wx.MessageDialog(self.Panel, "Your config has been successfully exported to "+File+".", "Wine Autostart - Information", style=wx.OK | wx.ICON_INFORMATION, pos=wx.DefaultPosition).ShowModal()
 
         else:
             logger.info("SettingsWindow().ExportConfig(): User canceled selection dialog...")
