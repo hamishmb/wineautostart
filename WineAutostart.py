@@ -742,7 +742,7 @@ class SettingsWindow(wx.Frame):
         """Create all CheckBoxes for SettingsWindow"""
         self.StartOnBootCB = wx.CheckBox(self.Panel, -1, "Start Wine Autostart on boot")
         self.StartupUpdateCheckCB = wx.CheckBox(self.Panel, -1, "Check for updates on startup.")
-        self.UseWineAutoscanCB = wx.CheckBox(self.Panel, -1, "Use Wine Autoscan\nif no autorun info is found")
+        self.UseWineAutoscanCB = wx.CheckBox(self.Panel, -1, "Scan for software\nif no autorun info is found")
         self.PromptBeforeScanningCB = wx.CheckBox(self.Panel, -1, "Ask before looking\nfor software on a disk")
  
     def CreateButtons(self):
@@ -1180,7 +1180,7 @@ class SettingsWindow(wx.Frame):
             NewFileContents.append("StartupUpdateCheck = "+unicode(int(StartupUpdateCheck))+"\n\n")
 
         if SetUseWineAutoscan == False:
-            NewFileContents.append("#Whether to use wine autoscan if autorun file parsing fails.\n")
+            NewFileContents.append("#Whether to scan for software if autorun file parsing fails.\n")
             NewFileContents.append("UseWineAutoscan = "+unicode(int(UseWineAutoscan))+"\n\n")
 
         if SetPromptBeforeScanning == False:
