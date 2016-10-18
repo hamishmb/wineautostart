@@ -44,7 +44,7 @@ from Tools.tools import Main as BackendTools
 
 #Define the version number, release date, and release type as global variables.
 Version = "2.0.2"
-ReleaseDate = "27/8/2015"
+ReleaseDate = "18/10/2016"
 ReleaseType = "Stable"
 
 def usage():
@@ -652,13 +652,7 @@ class PrivPolWindow(wx.Frame):
         self.TextBox = wx.TextCtrl(self.PrivPolPanel, -1, "", style=wx.TE_MULTILINE|wx.TE_READONLY|wx.TE_WORDWRAP)
 
         #Populate the text box.
-        PolicyFile = open("/usr/share/wineautostart/other/privacypolicy.txt", "r")
-        Lines = PolicyFile.readlines()
-
-        for EachLine in Lines:
-            self.TextBox.AppendText(EachLine)
-
-        PolicyFile.close()
+        self.TextBox.LoadFile("/usr/share/wineautostart/other/privacypolicy.txt")
 
         #Scroll the text box back up to the top.
         self.TextBox.SetInsertionPoint(0)
