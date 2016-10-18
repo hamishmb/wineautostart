@@ -89,6 +89,18 @@ class Main():
                     ExeFile = Temp.replace('\\', '/').replace("\\", "").replace('\n', '')
                     break
 
+                elif ".EXE" in Line: #*** Test this ***
+                    #Save the formatted info in a temporary variable, and break out of the loop.
+                    #First, just get whatever comes after '=' on this line.
+                    Temp = Line.split("=")[-1]
+
+                    #Next remove any spaces that appear after the end of the filename, which mess things up.
+                    Temp = Temp.split(".EXE")[0]+".EXE"
+
+                    #Finally, swap '\' for '/', escape whitespace with '\', and remove the '\n' from the end of the line.
+                    ExeFile = Temp.replace('\\', '/').replace("\\", "").replace('\n', '')
+                    break
+
         #Close the file.
         File.close()
 
