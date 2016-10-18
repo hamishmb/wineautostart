@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
-# Wine Autostart Version 2.0.1
+# Wine Autostart Version 2.0.2
 # Copyright (C) 2013-2015 Hamish McIntyre-Bhatty
 # Wine Autostart is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License version 3 or,
@@ -43,7 +43,7 @@ from GetDevInfo.getdevinfo import Main as DevInfoTools
 from Tools.tools import Main as BackendTools
 
 #Define the version number, release date, and release type as global variables.
-Version = "2.0.1"
+Version = "2.0.2"
 ReleaseDate = "27/8/2015"
 ReleaseType = "Stable"
 
@@ -1175,7 +1175,7 @@ class SettingsWindow(wx.Frame):
 
         #Check that everything was set. If not, write that config now.
         if SetStartOnBoot == False:
-            NewFileContents.append("#Configuration for Wine Autostart 2.0.1. '1' represents True and '0' represents False. Any other values (including text) will also be interpreted as True.\n")
+            NewFileContents.append("#Configuration for Wine Autostart 2.0.2. '1' represents True and '0' represents False. Any other values (including text) will also be interpreted as True.\n")
             NewFileContents.append("#All the config in here needs to stay in this order, or it might not work properly.\n")
             NewFileContents.append("#Lines starting with a '#' are comments. Feel free to add comments where necessary.\n\n")
             NewFileContents.append("#Whether to start on boot.\n")

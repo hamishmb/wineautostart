@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*- 
-# Indicator for Wine Autostart Version 2.0.1
+# Indicator for Wine Autostart Version 2.0.2
 # This file is part of Wine Autostart.
 # Copyright (C) 2013-2015 Hamish McIntyre-Bhatty
 # Wine Autostart is free software: you can redistribute it and/or modify it
@@ -28,7 +28,7 @@ import sys
 import threading
 
 #Define version here.
-Version = "2.0.1"
+Version = "2.0.2"
 
 #Begin Main Process IPC Thread.
 class MainProcessIPCThread(threading.Thread):

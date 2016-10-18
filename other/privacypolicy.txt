@@ -14,5 +14,3 @@ After processing the information, Wine Autostart deletes the temporary folder, a
 When connecting to code.launchpad.net to download the update information, bzr may attempt to use your SSH (Secure SHell) key (if you have one) to authenticate with launchpad.net, prompting you for the password. This is normal, and should not concern you. If you don't have an SSH key, don't be concerned, because the update check will still work.
 
 If you wish to see launchpad.net's privacy policy, see https://help.launchpad.net/PrivacyPolicy
-
-All in all, Wine Autostart should be completely safe and anonymous.
