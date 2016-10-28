@@ -48,7 +48,7 @@ class Main():
         AutorunFile = None
 
         for BaseDir, SubDir, File in Files:
-            if File.upper() = "AUTORUN.INF":
+            if File.upper() == "AUTORUN.INF":
                 AutorunFile = os.path.join(BaseDir, File)
                 logger.info("Tools: Main().FindAutorunFile(): Found autorun file at: "+AutorunFile+"...")
                 break
