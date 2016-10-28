@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Wine Autostart.  If not, see <http://www.gnu.org/licenses/>.
 
+#*** Remove package dep on "find" ***
+
 #Do future imports to prepare to support python 3. Use unicode strings rather than ASCII strings, as they fix potential problems.
 from __future__ import absolute_import
 from __future__ import division
@@ -103,6 +105,7 @@ GetDevInfo.getdevinfo.logger = logger
 
 Tools.tools.subprocess = subprocess
 Tools.tools.logger = logger
+Tools.tools.os = os
 
 #Begin Device Information Handler thread.
 class GetDeviceInformation(threading.Thread):

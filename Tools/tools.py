@@ -38,33 +38,23 @@ class Main():
                         return MountPoint
                 except: continue
 
-    def FindAutorunFile(self, MountPoint):
+    def FindAutorunFile(self, MountPoint): #*** test ***
         """Use the find command to look for autorun files, and return the result."""
         logger.debug("Tools: Main().FindAutorunFile(): Finding and returning any autorun file found in "+MountPoint+"...")
 
         #Just in case there's more than one autorun file (incredibly unlikely), return the first if there is one.
-        try:
-            AutorunFile = subprocess.check_output(["find", MountPoint.replace("\\", ""), "-iname", "autorun.inf"], stderr=subprocess.STDOUT).split('\n')[0]
+        Files = os.walk(MountPoint.replace("\\", ""))
 
-            if AutorunFile == "":
-                logger.warning("Tools: Main().FindAutorunFile(): No autorun files were found. '' was returned, possible bug! Continuing...")
-                return None
+        AutorunFile = None
 
-            logger.info("Tools: Main().FindAutorunFile(): Found autorun file at: "+AutorunFile+"...")
-            return AutorunFile
+        for BaseDir, SubDir, File in Files:
+            if File.upper() = "AUTORUN.INF":
+                AutorunFile = os.path.join(BaseDir, File)
+                logger.info("Tools: Main().FindAutorunFile(): Found autorun file at: "+AutorunFile+"...")
+                break
 
-        except subprocess.CalledProcessError as Error:
-            #Get the error.
-            for Line in unicode(Error.output, errors="ignore").split("\n"):
-                if "find:" in Line:
-                    Error = Line
-
-            logger.error("Tools: Main().FindAutorunFile(): Command 'find "+MountPoint+" -iname autorun.inf' errored! Error: "+Error)
-            return None
-
-        except IndexError as Error:
-            logger.warning("Tools: Main().FindAutorunFile(): No autorun files were found...")
-            return None
+        #Return the file or None if not found.
+        return AutorunFile
 
     def ParseAutorunFile(self, AutorunFile):
         """Read the autorun file, and return the path to an exe file listed inside, if there is one"""
@@ -108,27 +98,18 @@ class Main():
         logger.debug("Tools: Main().ParseAutorunFile(): Done!")
         return ExeFile
 
-    def ScanForExeFiles(self, MountPoint):
+    def ScanForExeFiles(self, MountPoint): #*** Test ***
         """Use 'find' to look for exe files in the given mountpoint"""
         logger.debug("Tools: Main().ScanForExeFiles(): Finding and returning and exe files found in "+MountPoint+"...")
 
         #Get a list of files.
-        try:
-            ExeFiles = subprocess.check_output(["find", MountPoint.replace("\\", ""), "-iname", "*.exe"], stderr=subprocess.STDOUT).split("\n")
+        ExeFilesGenerator = os.walk(MountPoint.replace("\\", ""))
+        ExeFiles = []
 
-        except subprocess.CalledProcessError as Error:
-            #Get the error.
-            for Line in unicode(Error.output, errors="ignore").split("\n"):
-                if "find:" in Line:
-                    Error = Line
+        for BaseDir, SubDir, File in ExeFiles:
+            if ".EXE" in File.upper():
+                ExeFiles.append(os.path.join(BaseDir, File))
 
-            logger.error("Tools: Main().ScanForExeFiles(): Command 'find "+MountPoint+" -iname *.exe' errored! Error: "+Error)
-            return []
-
-        else:
-            #Remove the '' entry to avoid errors.
-            ExeFiles.pop()
-
-            #Return the list.
-            logger.debug("Tools: Main().ScanForExeFiles(): Done!")
-            return ExeFiles
+        #Return the list.
+        logger.debug("Tools: Main().ScanForExeFiles(): Done!")
+        return ExeFiles
