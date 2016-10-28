@@ -380,7 +380,7 @@ class MainClass(wx.Frame):
             #Send a notification so the user knows Wine Autostart hasn't crashed if getting update info is slow.
             subprocess.Popen(["notify-send", "Wine Autostart", "Please wait a few seconds for Wine Autostart to gather update information.", "-i", "/usr/share/pixmaps/wineautostart.png"])
 
-            #Use bzr to download the version text file from the repo, which contains only that file. Sounds excessive, but how else could I do it?
+            #Use bzr to download the version text file from the repo, which contains only that file. Sounds excessive, but how else could I do it? Use my website instead when possible.
             logger.debug("MainClass().CheckForUpdates(): Downloading LatestVersion.txt from code.launchpad.net (https://code.launchpad.net/~wineautostart-development-team/wineautostart/latestversion)...")
             subprocess.check_call(['bzr', 'branch', '-q', 'lp:~wineautostart-development-team/wineautostart/latestversion', '/tmp/wineautostart/bzrrepo'])
             logger.debug("MainClass().CheckForUpdates(): Finished downloading LatestVersion.txt. Processing the contents...")
@@ -1027,6 +1027,10 @@ class SettingsWindow(wx.Frame):
 
     def ExportConfig(self, Event=None):
         """Export Wine Autostart's settings to a file specified by the user"""
+        #Save config first.
+        logger.debug("SettingsWindow().ExportConfig(): Saving config before exporting...")
+        self.SaveConfig(Exit=False)
+
         logger.debug("SettingsWindow().ExportConfig(): Getting user selection...")
 
         Dlg = wx.FileDialog(self.Panel, "Export As...", defaultDir=os.environ["HOME"], wildcard="Configuration Files (*.cfg)|*.cfg|All Files/Devices (*)|*" , style=wx.SAVE | wx.STAY_ON_TOP)
@@ -1057,7 +1061,7 @@ class SettingsWindow(wx.Frame):
         else:
             logger.info("SettingsWindow().ExportConfig(): User canceled selection dialog...")
 
-    def SaveConfig(self, Event=None):
+    def SaveConfig(self, Event=None, Exit=True):
         """Save all options, and exit SettingsWindow"""
         logger.info("SettingsWindow().SaveConfig(): Saving Config...")
 
@@ -1199,12 +1203,14 @@ class SettingsWindow(wx.Frame):
         #Write the finished lines to the file, using the helperscript.
         ConfigFile.close()
         subprocess.Popen(["pkexec", "/usr/share/wineautostart/helperscripts/saveconfig.py", ''.join(NewFileContents)]).wait()
+        logger.info("SettingsWindow().SaveConfig(): Finished saving options.")
 
-        #Finally, exit, and tell MainClass to re-read the config.
-        logger.info("SettingsWindow().SaveConfig(): Finished saving options. Closing Settings Window...")
-        self.Destroy()
+        if Exit:
+            #Finally, exit, and tell MainClass to re-read the config.
+            logger.info("SettingsWindow().SaveConfig(): Closing Settings Window...")
+            self.Destroy()
 
-        wx.CallAfter(self.ParentWindow.ReadConfig, StartBackend=True, UpdateCheckNow=False)
+            wx.CallAfter(self.ParentWindow.ReadConfig, StartBackend=True, UpdateCheckNow=False)
 
 #End Settings Window.
 #Start Backend thread.
