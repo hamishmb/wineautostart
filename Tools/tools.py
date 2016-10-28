@@ -43,15 +43,16 @@ class Main():
         logger.debug("Tools: Main().FindAutorunFile(): Finding and returning any autorun file found in "+MountPoint+"...")
 
         #Just in case there's more than one autorun file (incredibly unlikely), return the first if there is one.
-        Files = os.walk(MountPoint.replace("\\", ""))
+        FilesGenerator = os.walk(MountPoint.replace("\\", ""))
 
         AutorunFile = None
 
-        for BaseDir, SubDir, File in Files:
-            if File.upper() == "AUTORUN.INF":
-                AutorunFile = os.path.join(BaseDir, File)
-                logger.info("Tools: Main().FindAutorunFile(): Found autorun file at: "+AutorunFile+"...")
-                break
+        for BaseDir, SubDir, Files in FilesGenerator:
+            for File in Files:
+                if File.upper() == "AUTORUN.INF":
+                    AutorunFile = os.path.join(BaseDir, File)
+                    logger.info("Tools: Main().FindAutorunFile(): Found autorun file at: "+AutorunFile+"...")
+                    break
 
         #Return the file or None if not found.
         return AutorunFile
@@ -106,9 +107,10 @@ class Main():
         ExeFilesGenerator = os.walk(MountPoint.replace("\\", ""))
         ExeFiles = []
 
-        for BaseDir, SubDir, File in ExeFiles:
-            if ".EXE" in File.upper():
-                ExeFiles.append(os.path.join(BaseDir, File))
+        for BaseDir, SubDir, Files in ExeFilesGenerator:
+            for File in Files:
+                if ".EXE" in File.upper():
+                    ExeFiles.append(os.path.join(BaseDir, File))
 
         #Return the list.
         logger.debug("Tools: Main().ScanForExeFiles(): Done!")
