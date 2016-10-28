@@ -210,11 +210,11 @@ class MainClass(wx.Frame):
         AutoConfig = False
 
         #Check the file exists. If it doesn't we'll use default values.
-        if os.path.isfile("/usr/share/wineautostart/wineautostart.cfg"):
+        if os.path.isfile(os.environ["HOME"]+"/.wineautostart.cfg"):
 
             #Open it.
-            logger.info("MainClass().ReadConfig(): Found config file at /usr/share/wineautostart/wineautostart.cfg. Opening it...")
-            ConfigFile = open("/usr/share/wineautostart/wineautostart.cfg", "r")
+            logger.info("MainClass().ReadConfig(): Found config file at "+os.environ["HOME"]+"/.wineautostart.cfg. Opening it...")
+            ConfigFile = open(os.environ["HOME"]+"/.wineautostart.cfg", "r")
 
             #Loop through, reading all required settings.
             logger.info("MainClass().ReadConfig(): Reading configuration from file...")
@@ -955,7 +955,7 @@ class SettingsWindow(wx.Frame):
             logger.info("SettingsWindow().ImportConfig(): Importing config from: "+File+"...")
 
             #Attempt to open it.
-            logger.info("SettingsWindow().ImportConfig(): Attempting to open config file at /usr/share/wineautostart/wineautostart.cfg...")
+            logger.info("SettingsWindow().ImportConfig(): Attempting to open config file at "+os.environ["HOME"]+"/.wineautostart.cfg...")
             try:
                 ConfigFile = open(File, "r")
 
@@ -1042,7 +1042,7 @@ class SettingsWindow(wx.Frame):
 
             #Try and export to it.
             try:
-                subprocess.check_output(["cp", "/usr/share/wineautostart/wineautostart.cfg", File], stderr=subprocess.STDOUT)
+                subprocess.check_output(["cp", os.environ["HOME"]+"/.wineautostart.cfg", File], stderr=subprocess.STDOUT)
 
             except subprocess.CalledProcessError, Error:
 
@@ -1110,11 +1110,11 @@ class SettingsWindow(wx.Frame):
 
         #Now we need to write the config to the file.
         #Create it if it doesn't exist.
-        if not os.path.isfile("/usr/share/wineautostart/wineautostart.cfg"):
-            subprocess.Popen(["pkexec", "touch", "/usr/share/wineautostart/wineautostart.cfg"]).wait()
+        if not os.path.isfile(os.environ["HOME"]+"/.wineautostart.cfg"):
+            subprocess.Popen(["touch", os.environ["HOME"]+"/.wineautostart.cfg"]).wait()
 
         #Open the file in read mode, so we can find the important bits of config to edit. Also, use a list to temporarily store the modified lines.
-        ConfigFile = open("/usr/share/wineautostart/wineautostart.cfg", 'r')
+        ConfigFile = open(os.environ["HOME"]+"/.wineautostart.cfg", 'r')
         NewFileContents = []
 
         #Set these variables so we know if we set all the settings.
@@ -1200,9 +1200,11 @@ class SettingsWindow(wx.Frame):
             NewFileContents.append("#List of space-seperated devices you wish to be monitored.\n")
             NewFileContents.append("DevicesToMonitor = "+' '.join(DevicesToMonitor)+"\n\n")
 
-        #Write the finished lines to the file, using the helperscript.
+        #Write the finished lines to the file.
         ConfigFile.close()
-        subprocess.Popen(["pkexec", "/usr/share/wineautostart/helperscripts/saveconfig.py", ''.join(NewFileContents)]).wait()
+        ConfigFile = open(os.environ["HOME"]+"/.wineautostart.cfg", 'w')
+        ConfigFile.write(''.join(NewFileContents))
+        ConfigFile.close()
         logger.info("SettingsWindow().SaveConfig(): Finished saving options.")
 
         if Exit:
