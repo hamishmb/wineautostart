@@ -44,7 +44,7 @@ from Tools.tools import Main as BackendTools
 
 #Define the version number, release date, and release type as global variables.
 Version = "2.0.2"
-ReleaseDate = "18/10/2016"
+ReleaseDate = "28/10/2016"
 ReleaseType = "Stable"
 
 def usage():
@@ -278,7 +278,7 @@ class MainClass(wx.Frame):
             #Ask the user to configure.
             logger.warning("MainClass().ReadConfig(): Couldn't find the config file! This is probably the first run. Using default config...")
             self.SetStatus("Please Configure...")
-            wx.MessageDialog(None, "Please configure Wine Autostart using the indicator menus, as this is the first run. For the moment, Wine Autostart will use some default settings.", "Wine Autostart - First Run", wx.OK | wx.ICON_EXCLAMATION, pos=wx.DefaultPosition).ShowModal()
+            wx.MessageDialog(None, "Please configure Wine Autostart using the indicator menus, as this is the first run. For the moment, Wine Autostart will use some default settings.", "Wine Autostart - First Run", wx.OK | wx.ICON_EXCLAMATION | wx.STAY_ON_TOP, pos=wx.DefaultPosition).ShowModal()
             ConfigPresent = False
 
         #Check if we found all settings.
@@ -312,7 +312,7 @@ class MainClass(wx.Frame):
             self.SetStatus("Please Configure...")
 
             logger.warning("MainClass().ReadConfig(): Couldn't find all of the config in the config file! Using default values for settings that were not found...")
-            wx.MessageDialog(None, "Please configure Wine Autostart using the indicator menus, as the configuration is incomplete. For the moment, Wine Autostart will use defaults for settings that weren't found.", "Wine Autostart - Configuration Problem", wx.OK | wx.ICON_EXCLAMATION, pos=wx.DefaultPosition).ShowModal()
+            wx.MessageDialog(None, "Please configure Wine Autostart using the indicator menus, as the configuration is incomplete. For the moment, Wine Autostart will use defaults for settings that weren't found.", "Wine Autostart - Configuration Problem", wx.OK | wx.ICON_EXCLAMATION | wx.STAY_ON_TOP, pos=wx.DefaultPosition).ShowModal()
 
         #Do the startup update check if set.
         if StartupUpdateCheck and UpdateCheckNow:
@@ -398,7 +398,8 @@ class MainClass(wx.Frame):
             if None in [LatestStable, LatestDevel]:
                 #We didn't!
                 logger.error("MainClass().CheckForUpdates(): Bad update information! Telling user...")
-                wx.MessageDialog(None, "Wine Autostart failed to process the update information! This is either because of bad update information, or a bug in Wine Autostart. Please contact me (via www.launchpad.net/~hamishmb), so I can fix it. Thanks.", "Wine Autostart - Update Status", wx.OK | wx.ICON_ERROR, pos=wx.DefaultPosition).ShowModal()
+                wx.MessageDialog(None, "Wine Autostart failed to process the update information! This is either because of bad update information, or a bug in Wine Autostart. Please contact me (via www.launchpad.net/~hamishmb), so I can fix it. Thanks.", "Wine Autostart - Update Status", wx.OK | wx.ICON_ERROR | wx.STAY_ON_TOP, pos=wx.DefaultPosition).ShowModal()
+
             else:
                 #We did. Compare the update information to this program's version an type (Stable or Development). As we do this, create a multiline string for the dialog to report to the user.
                 UpdateInfo = "Update Information:\n\nProgram Version: "+Version+"\nRelease Type: "+ReleaseType+"\n\nIf you are using the PPA (www.launchpad.net/~hamishmb/myppa), you will get automatic updates.\n\n"
@@ -449,12 +450,12 @@ class MainClass(wx.Frame):
 
                 #Finally, show the user the gathered info.
                 logger.debug("MainClass().CheckForUpdates(): Showing the user the finished info...")
-                wx.MessageDialog(None, UpdateInfo, "Wine Autostart - Update Status", wx.OK | wx.ICON_INFORMATION, pos=wx.DefaultPosition).ShowModal()
+                wx.MessageDialog(None, UpdateInfo, "Wine Autostart - Update Status", wx.OK | wx.ICON_INFORMATION | wx.STAY_ON_TOP, pos=wx.DefaultPosition).ShowModal()
 
         except subprocess.CalledProcessError:
             #Bad/No internet connection! Warn the user.
             logger.error("MainClass().CheckForUpdates(): Couldn't establish a connection to code.launchpad.net! The internet connection is probably at fault here.")
-            wx.MessageDialog(None, "Wine Autostart failed to download the update information! Please check your internet connection. If you were prompted for one, you may have refused to enter your SSH key password. Don't worry; it's safe to do that.", "Wine Autostart - Update Status", wx.OK | wx.ICON_ERROR, pos=wx.DefaultPosition).ShowModal()
+            wx.MessageDialog(None, "Wine Autostart failed to download the update information! Please check your internet connection. If you were prompted for one, you may have refused to enter your SSH key password. Don't worry; it's safe to do that.", "Wine Autostart - Update Status", wx.OK | wx.ICON_ERROR | wx.STAY_ON_TOP, pos=wx.DefaultPosition).ShowModal()
 
     def ShowPrivacyPolicy(self):
         """Show PrivPolWindow"""
@@ -467,7 +468,7 @@ class MainClass(wx.Frame):
 
         else:
             logger.error("MainClass().ShowSettings(): Can't change settings while running software! Warning user...")
-            wx.MessageDialog(None, "Wine Autostart is currently running software! Please close the software before editing settings.", "Wine Autostart - Error", wx.OK | wx.ICON_ERROR, pos=wx.DefaultPosition).ShowModal()
+            wx.MessageDialog(None, "Wine Autostart is currently running software! Please close the software before editing settings.", "Wine Autostart - Error", wx.OK | wx.ICON_ERROR | wx.STAY_ON_TOP, pos=wx.DefaultPosition).ShowModal()
 
     def StartBackend(self):
         """Start the backend"""
@@ -489,7 +490,7 @@ class MainClass(wx.Frame):
         """Stop the backend"""
         if RunningSoftware:
             logger.error("MainClass().StopBackend(): Can't stop the backend while running software! Warning user...")
-            wx.MessageDialog(None, "Wine Autostart is currently running software! Please close the software before stopping Wine Autostart. You may need to wait a few moments for Wine Autostart to recognise software is no longer running.", "Wine Autostart - Error", wx.OK | wx.ICON_ERROR, pos=wx.DefaultPosition).ShowModal()
+            wx.MessageDialog(None, "Wine Autostart is currently running software! Please close the software before stopping Wine Autostart. You may need to wait a few moments for Wine Autostart to recognise software is no longer running.", "Wine Autostart - Error", wx.OK | wx.ICON_ERROR | wx.STAY_ON_TOP, pos=wx.DefaultPosition).ShowModal()
 
         else:
             logger.debug("MainClass().StopBackend(): Stopping backend...")
@@ -531,13 +532,13 @@ class MainClass(wx.Frame):
             title = "Wine Autostart - Error"
             style = wx.OK | wx.ICON_ERROR
 
-        dlg = wx.MessageDialog(None, msg, title, style, pos=wx.DefaultPosition).ShowModal()
+        dlg = wx.MessageDialog(None, msg, title, style | wx.STAY_ON_TOP, pos=wx.DefaultPosition).ShowModal()
         dlgClosed = True
 
     def ShowThreadYesNodlg(self,msg,title="Wine Autostart - Question"):
         """Show a Yes/No dialog for a background thread. Use this with: wx.CallAfter(self.ParentWindow.ShowThreadYesNodlg, msg=<message>, title=<title>)"""
         global dlgResult
-        dlg = wx.MessageDialog(None, msg, title, wx.YES_NO | wx.ICON_QUESTION)
+        dlg = wx.MessageDialog(None, msg, title, wx.YES_NO | wx.ICON_QUESTION | wx.STAY_ON_TOP, pos=wx.DefaultPosition)
 
         if dlg.ShowModal() == wx.ID_YES:
             dlgResult = "Yes"
@@ -563,7 +564,7 @@ class MainClass(wx.Frame):
         """Exit the program"""
         if RunningSoftware:
             logger.error("MainClass().StopBackend(): Can't close Wine Autostart while running software! Warning user...")
-            wx.MessageDialog(None, "Wine Autostart is currently running software! Please close the software before exiting Wine Autostart. You may need to wait a few moments for Wine Autostart to recognise software is no longer running.", "Wine Autostart - Error", wx.OK | wx.ICON_ERROR, pos=wx.DefaultPosition).ShowModal()
+            wx.MessageDialog(None, "Wine Autostart is currently running software! Please close the software before exiting Wine Autostart. You may need to wait a few moments for Wine Autostart to recognise software is no longer running.", "Wine Autostart - Error", wx.OK | wx.ICON_ERROR | wx.STAY_ON_TOP, pos=wx.DefaultPosition).ShowModal()
 
         else:
             logger.info("MainClass().OnExit(): Exiting...")
@@ -574,13 +575,13 @@ class MainClass(wx.Frame):
             self.StopBackend()
 
             #Prompt user to save the log file.
-            dlg = wx.MessageDialog(None, "Do you want to keep Wine Autostart's log file? For privacy reasons, Wine Autostart will delete its log file when closing. If you want to save it, which is helpful for debugging if something went wrong, click yes, and otherwise click no.", "Wine Autostart - Question", style=wx.YES_NO | wx.ICON_QUESTION, pos=wx.DefaultPosition)
+            dlg = wx.MessageDialog(None, "Do you want to keep Wine Autostart's log file? For privacy reasons, Wine Autostart will delete its log file when closing. If you want to save it, which is helpful for debugging if something went wrong, click yes, and otherwise click no.", "Wine Autostart - Question", style=wx.YES_NO | wx.ICON_QUESTION | wx.STAY_ON_TOP, pos=wx.DefaultPosition)
 
             if dlg.ShowModal() == wx.ID_YES:
                 #Make sure it eventually gets saved, even if there are permission errors and suchlike.
                 while True:
                     #Ask the user where to save it.
-                    Dlg = wx.FileDialog(None, "Save log file to...", defaultDir=os.environ["HOME"], wildcard="Log Files (*.log)|*.log|All Files/Devices (*)|*" , style=wx.SAVE)
+                    Dlg = wx.FileDialog(None, "Save log file to...", defaultDir=os.environ["HOME"], wildcard="Log Files (*.log)|*.log|All Files/Devices (*)|*" , style=wx.SAVE | wx.STAY_ON_TOP)
 
                     if Dlg.ShowModal() == wx.ID_OK:
                         #Get the path.
@@ -592,21 +593,21 @@ class MainClass(wx.Frame):
 
                         except subprocess.CalledProcessError, Error:
                             if "Permission denied" in unicode(Error.output, errors='ignore'):
-                                wx.MessageDialog(None, "Couldn't save log to "+File+"! Wine Autostart doesn't have permission to write to that folder. Please try saving to a different folder.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR, pos=wx.DefaultPosition).ShowModal()
+                                wx.MessageDialog(None, "Couldn't save log to "+File+"! Wine Autostart doesn't have permission to write to that folder. Please try saving to a different folder.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR | wx.STAY_ON_TOP, pos=wx.DefaultPosition).ShowModal()
 
                             else:
-                                wx.MessageDialog(None, "Couldn't save log to "+File+"! Please try saving to a different folder.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR, pos=wx.DefaultPosition).ShowModal()
+                                wx.MessageDialog(None, "Couldn't save log to "+File+"! Please try saving to a different folder.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR | wx.STAY_ON_TOP, pos=wx.DefaultPosition).ShowModal()
 
                         else:
-                            wx.MessageDialog(None, 'Done! Wine Autostart will now exit.', 'Wine Autostart - Information', wx.OK | wx.ICON_INFORMATION).ShowModal()
+                            wx.MessageDialog(None, 'Done! Wine Autostart will now exit.', 'Wine Autostart - Information', wx.OK | wx.ICON_INFORMATION | wx.STAY_ON_TOP, pos=wx.DefaultPosition).ShowModal()
                             break
 
                     else:
-                        wx.MessageDialog(None, 'Okay, Wine Autostart will now exit without saving the log file.', 'Wine Autostart - Information', wx.OK | wx.ICON_INFORMATION).ShowModal()
+                        wx.MessageDialog(None, 'Okay, Wine Autostart will now exit without saving the log file.', 'Wine Autostart - Information', wx.OK | wx.ICON_INFORMATION | wx.STAY_ON_TOP, pos=wx.DefaultPosition).ShowModal()
                         break
 
             else:
-                wx.MessageDialog(None, 'Okay, Wine Autostart will now exit without saving the log file.', 'Wine Autostart - Information', wx.OK | wx.ICON_INFORMATION).ShowModal()
+                wx.MessageDialog(None, 'Okay, Wine Autostart will now exit without saving the log file.', 'Wine Autostart - Information', wx.OK | wx.ICON_INFORMATION | wx.STAY_ON_TOP, pos=wx.DefaultPosition).ShowModal()
 
             #Destroy the indicator.
             self.SendMessage(Message="Quit")
@@ -626,7 +627,7 @@ class MainClass(wx.Frame):
 class PrivPolWindow(wx.Frame):
     def __init__(self,ParentWindow):
         """Initialize PrivPolWindow"""
-        wx.Frame.__init__(self, parent=wx.GetApp().TopWindow, title="Wine Autostart - Privacy Policy", size=(400,310), style=wx.DEFAULT_FRAME_STYLE)
+        wx.Frame.__init__(self, parent=wx.GetApp().TopWindow, title="Wine Autostart - Privacy Policy", size=(400,310), style=wx.DEFAULT_FRAME_STYLE | wx.STAY_ON_TOP)
         self.Panel = wx.Panel(self)
         self.SetClientSize(wx.Size(400,310))
         self.ParentWindow = ParentWindow
@@ -688,7 +689,7 @@ class PrivPolWindow(wx.Frame):
 class SettingsWindow(wx.Frame):
     def __init__(self,ParentWindow):
         """Initialize SettingsWindow"""
-        wx.Frame.__init__(self, parent=ParentWindow, title="Wine Autostart - Settings", size=(510,380), style=wx.DEFAULT_FRAME_STYLE)
+        wx.Frame.__init__(self, parent=ParentWindow, title="Wine Autostart - Settings", size=(510,380), style=wx.DEFAULT_FRAME_STYLE | wx.STAY_ON_TOP)
         self.Panel = wx.Panel(self)
         self.SetClientSize(wx.Size(510,380))
         self.ParentWindow = ParentWindow
@@ -876,6 +877,7 @@ class SettingsWindow(wx.Frame):
             #Add the device to the list.
             logger.debug("SettingsWindow().OnCheckBox(): Adding device: "+Device+" to the current device selections list...")
             self.CurrentDeviceSelections.append(Device)
+
         elif CheckBox.IsChecked() == False:
             #Remove the device from the list, if it's in the list.
             logger.debug("SettingsWindow().OnCheckBox(): Removing device: "+Device+" from the current device selections list...")
@@ -942,7 +944,7 @@ class SettingsWindow(wx.Frame):
         """Import config from a different file. Don't save it or permanently set it."""
         logger.debug("SettingsWindow().ImportConfig(): Getting user selection...")
 
-        Dlg = wx.FileDialog(self.Panel, "Import From...", defaultDir=os.environ["HOME"], wildcard="Configuration Files (*.cfg)|*.cfg|All Files/Devices (*)|*" , style=wx.OPEN)
+        Dlg = wx.FileDialog(self.Panel, "Import From...", defaultDir=os.environ["HOME"], wildcard="Configuration Files (*.cfg)|*.cfg|All Files/Devices (*)|*" , style=wx.OPEN | wx.STAY_ON_TOP)
 
         if Dlg.ShowModal() == wx.ID_OK:
             #Get the path.
@@ -958,11 +960,11 @@ class SettingsWindow(wx.Frame):
 
                 if "Permission denied" in unicode(Error):
                     logger.error("SettingsWindow().ImportConfig(): Error importing config from: "+File+"! Insufficient permissions. Warning user and giving up...")
-                    wx.MessageDialog(self.Panel, "Couldn't import config from "+File+"! Wine Autostart doesn't have permission to read that file. Please try importing from a different file.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR, pos=wx.DefaultPosition).ShowModal()
+                    wx.MessageDialog(self.Panel, "Couldn't import config from "+File+"! Wine Autostart doesn't have permission to read that file. Please try importing from a different file.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR | wx.STAY_ON_TOP, pos=wx.DefaultPosition).ShowModal()
 
                 else:
                     logger.error("SettingsWindow().ImportConfig(): Error importing config from: "+File+"! Warning user and giving up...")
-                    wx.MessageDialog(self.Panel, "Couldn't import config from "+File+"! Please try importing from a different file.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR, pos=wx.DefaultPosition).ShowModal()
+                    wx.MessageDialog(self.Panel, "Couldn't import config from "+File+"! Please try importing from a different file.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR | wx.STAY_ON_TOP, pos=wx.DefaultPosition).ShowModal()
 
             else:
 
@@ -1024,7 +1026,7 @@ class SettingsWindow(wx.Frame):
         """Export Wine Autostart's settings to a file specified by the user"""
         logger.debug("SettingsWindow().ExportConfig(): Getting user selection...")
 
-        Dlg = wx.FileDialog(self.Panel, "Export As...", defaultDir=os.environ["HOME"], wildcard="Configuration Files (*.cfg)|*.cfg|All Files/Devices (*)|*" , style=wx.SAVE)
+        Dlg = wx.FileDialog(self.Panel, "Export As...", defaultDir=os.environ["HOME"], wildcard="Configuration Files (*.cfg)|*.cfg|All Files/Devices (*)|*" , style=wx.SAVE | wx.STAY_ON_TOP)
 
         if Dlg.ShowModal() == wx.ID_OK:
             #Get the path.
@@ -1039,15 +1041,15 @@ class SettingsWindow(wx.Frame):
 
                 if "Permission denied" in unicode(Error.output, errors='ignore'):
                     logger.error("SettingsWindow().ExportConfig(): Error exporting config to: "+File+"! Insufficient permissions. Warning user and giving up...")
-                    wx.MessageDialog(self.Panel, "Couldn't export config to "+File+"! Wine Autostart doesn't have permission to write to that folder. Please try exporting to a different folder.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR, pos=wx.DefaultPosition).ShowModal()
+                    wx.MessageDialog(self.Panel, "Couldn't export config to "+File+"! Wine Autostart doesn't have permission to write to that folder. Please try exporting to a different folder.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR | wx.STAY_ON_TOP, pos=wx.DefaultPosition).ShowModal()
 
                 else:
                     logger.error("SettingsWindow().ExportConfig(): Error exporting config to: "+File+"! Warning user and giving up...")
-                    wx.MessageDialog(self.Panel, "Couldn't export config to "+File+"! Please try exporting to a different folder.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR, pos=wx.DefaultPosition).ShowModal()
+                    wx.MessageDialog(self.Panel, "Couldn't export config to "+File+"! Please try exporting to a different folder.", "Wine Autostart - Error!", style=wx.OK | wx.ICON_ERROR | wx.STAY_ON_TOP, pos=wx.DefaultPosition).ShowModal()
 
             else:
                 logger.info("SettingsWindow().ExportConfig(): Finished exporting config to: "+File+"...")
-                wx.MessageDialog(self.Panel, "Your config has been successfully exported to "+File+".", "Wine Autostart - Information", style=wx.OK | wx.ICON_INFORMATION, pos=wx.DefaultPosition).ShowModal()
+                wx.MessageDialog(self.Panel, "Your config has been successfully exported to "+File+".", "Wine Autostart - Information", style=wx.OK | wx.ICON_INFORMATION | wx.STAY_ON_TOP, pos=wx.DefaultPosition).ShowModal()
 
         else:
             logger.info("SettingsWindow().ExportConfig(): User canceled selection dialog...")
