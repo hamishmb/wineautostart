@@ -15,6 +15,8 @@
 # along with Wine Autostart.  If not, see <http://www.gnu.org/licenses/>.
 
 #*** Remove package dep on "find" ***
+#*** Add package dep on bs4 ***
+#*** Remove package dep on re module ***
 
 #Do future imports to prepare to support python 3. Use unicode strings rather than ASCII strings, as they fix potential problems.
 from __future__ import absolute_import
@@ -24,6 +26,7 @@ from __future__ import unicode_literals
 
 #Import modules
 from distutils.version import LooseVersion
+from bs4 import BeautifulSoup
 
 import wx
 import wx.animate
@@ -35,7 +38,6 @@ import shutil
 import subprocess
 import logging
 import getopt
-import re
 
 #Import custom-made modules
 import GetDevInfo
@@ -99,9 +101,12 @@ for o, a in opts:
         assert False, "unhandled option"
 
 #Setup custom-made modules (make global variables accessible inside the packages).
+DiskInfo = {}
+
 GetDevInfo.getdevinfo.subprocess = subprocess
-GetDevInfo.getdevinfo.re = re
 GetDevInfo.getdevinfo.logger = logger
+GetDevInfo.getdevinfo.BeautifulSoup = BeautifulSoup
+GetDevInfo.getdevinfo.DiskInfo = DiskInfo
 
 Tools.tools.subprocess = subprocess
 Tools.tools.logger = logger
@@ -137,6 +142,7 @@ class AppIndicatorIPCThread(threading.Thread):
             try:
                 Line = self.Indicator.stdout.readline().replace("\n", "")
                 wx.CallAfter(self.ParentWindow.ProcessMessage, Line)
+
             except wx.PyDeadObjectError:
                 #MainClass is dead. Break out of the loop and exit the thread.
                 break
@@ -900,9 +906,9 @@ class SettingsWindow(wx.Frame):
 
     def ReceiveDeviceInfo(self, Info):
         """Get new device info and to call the function that updates the checkboxes"""
-        logger.info("MainWindow().ReceiveDeviceInfo(): Getting new device information...")
-        global DeviceInfo
-        DeviceInfo = Info
+        logger.info("MainWindow().ReceiveDeviceInfo(): Received new device information...")
+        global DiskInfo
+        DiskInfo = Info
 
         #Update the checkboxes in self.DeviceSizer.
         self.UpdateCheckBoxes()
@@ -918,17 +924,9 @@ class SettingsWindow(wx.Frame):
         self.CheckBoxIDList = []
 
         #Now add new ones.
-        for Device in DeviceInfo[0]:
-            #Get the element number of the device.
-            DeviceNumber = DeviceInfo[0].index(Device)
-
-            #Find the vendor, product and description for each device.
-            Vendor = DeviceInfo[2][DeviceNumber]
-            Product = DeviceInfo[3][DeviceNumber]
-            Description = DeviceInfo[5][DeviceNumber]
-
+        for Device in DiskInfo:
             #Create a checkbox object, and add it to the sizer, save its ID, and bind an event for it.
-            CheckBox = wx.CheckBox(self.Panel, -1, Device+", "+Vendor+" "+Product+", "+Description)
+            CheckBox = wx.CheckBox(self.Panel, -1, Device+", "+DiskInfo[Device]["Vendor"]+" "+DiskInfo[Device]["Product"]+", "+DiskInfo[Device]["Description"])
             self.DeviceSizer.Add(CheckBox, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_TOP)
             self.CheckBoxIDList.append(CheckBox.GetId())
             self.Bind(wx.EVT_CHECKBOX, self.OnCheckBox, CheckBox)
@@ -936,6 +934,7 @@ class SettingsWindow(wx.Frame):
             #Check it if the device is one of our current selections.
             if Device in self.CurrentDeviceSelections:
                 CheckBox.SetValue(1)
+
             else:
                 CheckBox.SetValue(0)
 
