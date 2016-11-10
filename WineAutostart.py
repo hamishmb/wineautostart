@@ -514,7 +514,7 @@ class MainClass(wx.Frame):
         aboutbox.SetIcon(AppIcon)
         aboutbox.Name = "Wine Autostart"
         aboutbox.Version = Version+"\nReleased "+ReleaseDate+"\n"
-        aboutbox.Copyright = "(C) 2013-2015 Hamish McIntyre-Bhatty"
+        aboutbox.Copyright = "(C) 2013-2016 Hamish McIntyre-Bhatty"
         aboutbox.Description = "Allows Windows Software disks\nto be run under Linux with WINE"
         aboutbox.WebSite = ("https://launchpad.net/wineautostart", "Launchpad page")
         aboutbox.Developers = ["Hamish McIntyre-Bhatty"]
