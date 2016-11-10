@@ -235,20 +235,14 @@ class MainClass(wx.Frame):
 
                     #Apply the setting if needed.
                     if StartOnBoot:
-                        if not os.path.isfile("/etc/xdg/autostart/wineautostart.desktop"):
+                        if not os.path.isfile(os.environ["HOME"]+"/.config/autostart/wineautostart.desktop"):
                             logger.debug("MainClass().ReadConfig(): Applying settings for StartOnBoot...")
-
-                            #Send a notification so the user understands why he/she is being asked for a password.
-                            subprocess.Popen(["notify-send", "Wine Autostart", "Applying StartOnBoot settings... You may be asked for your password.", "-i", "/usr/share/pixmaps/wineautostart.png"])
-                            subprocess.Popen("pkexec cp /usr/share/wineautostart/other/wineautostart.desktop /etc/xdg/autostart/wineautostart.desktop", shell=True).wait()
+                            subprocess.Popen("cp /usr/share/wineautostart/other/wineautostart.desktop "+os.environ["HOME"]+"/.config/autostart/wineautostart.desktop", shell=True).wait()
 
                     else:
-                        if os.path.isfile("/etc/xdg/autostart/wineautostart.desktop"):
+                        if os.path.isfile(os.environ["HOME"]+"/.config/autostart/wineautostart.desktop"):
                             logger.debug("MainClass().ReadConfig(): Applying settings for StartOnBoot...")
-
-                            #Send a notification so the user understands why he/she is being asked for a password.
-                            subprocess.Popen(["notify-send", "Wine Autostart", "Applying StartOnBoot settings... You may be asked for your password.", "-i", "/usr/share/pixmaps/wineautostart.png"])
-                            subprocess.Popen("pkexec rm /etc/xdg/autostart/wineautostart.desktop", shell=True).wait()
+                            subprocess.Popen("rm "+os.environ["HOME"]+"/.config/autostart/wineautostart.desktop", shell=True).wait()
 
                 #Determine whether we're checking for updates on startup.
                 elif "StartupUpdateCheck" in line and '#' not in line:
