@@ -235,6 +235,9 @@ class MainClass(wx.Frame):
 
                     #Apply the setting if needed.
                     if StartOnBoot:
+                        if not os.path.isdir(os.environ["HOME"]+"/.config/autostart"):
+                            os.makedirs(os.environ["HOME"]+"/.config/autostart")
+
                         if not os.path.isfile(os.environ["HOME"]+"/.config/autostart/wineautostart.desktop"):
                             logger.debug("MainClass().ReadConfig(): Applying settings for StartOnBoot...")
                             subprocess.Popen("cp /usr/share/wineautostart/other/wineautostart.desktop "+os.environ["HOME"]+"/.config/autostart/wineautostart.desktop", shell=True).wait()
