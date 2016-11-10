@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
 # Wine Autostart Version 2.0.2
-# Copyright (C) 2013-2015 Hamish McIntyre-Bhatty
+# Copyright (C) 2013-2016 Hamish McIntyre-Bhatty
 # Wine Autostart is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License version 3 or,
 # at your option, any later version.
@@ -48,7 +48,7 @@ from Tools.tools import Main as BackendTools
 
 #Define the version number, release date, and release type as global variables.
 Version = "2.0.2"
-ReleaseDate = "28/10/2016"
+ReleaseDate = "10/11/2016"
 ReleaseType = "Stable"
 
 def usage():
@@ -60,7 +60,7 @@ def usage():
     print("       -d, --debug:                  Log lots of boring debug messages, as well as information, warnings, errors and critical errors. Usually used for diagnostic purposes.")
     print("                                     The default, as it's very helpful if problems are encountered, and the user needs help\n")
     print("Wine Autostart "+Version+" is released under the GNU GPL Version 3")
-    print("Copyright (C) Hamish McIntyre-Bhatty 2013-2015")
+    print("Copyright (C) Hamish McIntyre-Bhatty 2013-2016")
 
 #Check cmdline options
 try:

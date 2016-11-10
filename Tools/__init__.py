@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Tools Package for Wine Autostart Version 2.0.2
 # This file is part of Wine Autostart.
-# Copyright (C) 2013-2015 Hamish McIntyre-Bhatty
+# Copyright (C) 2013-2016 Hamish McIntyre-Bhatty
 # Wine Autostart is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License version 3 or,
 # at your option, any later version.
