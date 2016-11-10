@@ -65,6 +65,7 @@ def usage():
 #Check cmdline options
 try:
     opts, args = getopt.getopt(sys.argv[1:], "hqvd", ["help", "quiet", "verbose", "debug"])
+
 except getopt.GetoptError as err:
     #Invalid option. Show the help message and then exit.
     #Show the error.
