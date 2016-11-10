@@ -162,8 +162,9 @@ class MainClass(wx.Frame):
         wx.Frame.__init__(self, parent=None, style=wx.FRAME_NO_TASKBAR)
 
         print("Wine Autostart Version "+Version+" Starting...")
-        logger.info("WxFixBoot Version "+Version+" Starting...")
+        logger.info("Wine Autostart Version "+Version+" Starting...")
         logger.info("Release date: "+ReleaseDate)
+        logger.info("Running on Python version: "+unicode(sys.version_info)+"...")
         logger.info("Running on wxPython version: "+wx.version()+"...")
 
         global Exiting
